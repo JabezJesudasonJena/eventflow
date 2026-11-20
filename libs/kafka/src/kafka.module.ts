@@ -5,7 +5,7 @@ import { KAFKA_BROKER, KAFKA_CLIENT_ID, KAFKA_CONSUMER_GROUP } from './constants
 import { DynamicModule } from '@nestjs/common';
 
 export const KAFKA_SERVICE = 'KAFKA_SERVICE';
-
+//  what is the error here ?
 @Module({})
 export class KafkaModule {
   static register(consumerGroup?: string ): DynamicModule {
@@ -26,7 +26,8 @@ export class KafkaModule {
           }
         }])
       ],
-      exports: [KafkaService],
+      providers: [KafkaService],
+      exports: [KafkaService, ClientsModule],
     }
   }
 }
