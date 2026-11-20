@@ -13,3 +13,6 @@ export * from './interfaces/index.js';
 
 // Utils
 export * from './utils/index.js';
+
+// DTOs
+export * from './dto/index.js';
