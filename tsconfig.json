@@ -52,6 +52,12 @@
       "path": "./apps/auth-service/tsconfig.app.json"
     },
     {
+      "path": "./apps/api-gateway/tsconfig.app.json"
+    },
+    {
+      "path": "./apps/events-service/tsconfig.app.json"
+    },
+    {
       "path": "./tsconfig.spec.json"
     }
   ]
