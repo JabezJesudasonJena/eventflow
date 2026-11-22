@@ -62,8 +62,11 @@ export class TicketsServiceService implements OnModuleInit {
         status: 'CONFIRMED',
       })
       .returning();
+    // Added eventTitle and ticketCode for the notification service to send a more informative email
     this.kafkaClient.emit(KAFKA_TOPICS.TICKET_PURCHASED, {
       id: ticket.id,
+      ticketCode: ticket.ticketCode,
+      eventTitle: event.title,
       eventId: ticket.eventId,
       userId: ticket.userId,
       quantity: ticket.quantity,
