@@ -1,9 +1,8 @@
 import {Injectable} from '@nestjs/common';
-import { SERVICE_PORTS } from '@app/common';
+import { EventResponse, SERVICE_PORTS, CreateEventDto, UpdateEventDto } from '@app/common';
 import { HttpService } from '@nestjs/axios';
 import { HttpException } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
-
 
 @Injectable()
 export class EventsService {
@@ -13,10 +12,10 @@ export class EventsService {
         private readonly httpService: HttpService
     ) {}
 
-    async create(data: object, userId: string, userRole: string) {
+    async create(data: CreateEventDto, userId: string, userRole: string) : Promise<EventResponse> {
         try { 
             const res = await firstValueFrom(
-                this.httpService.post(`${this.eventsServiceUrl}`, data, {
+                this.httpService.post<EventResponse>(`${this.eventsServiceUrl}`, data, {
                     headers: { 'x-user-id': userId, 'x-user-role': userRole },
                 })
             );
@@ -26,10 +25,10 @@ export class EventsService {
         }
     }
 
-    async findAll(){
+    async findAll(): Promise<EventResponse[]> {
         try {
             const res = await firstValueFrom(
-                this.httpService.get(`${this.eventsServiceUrl}`)
+                this.httpService.get<EventResponse[]>(`${this.eventsServiceUrl}`)
             );
             return res.data;
         } catch (error: any) {
@@ -37,10 +36,10 @@ export class EventsService {
         }
     }
 
-    async findOne(id: string) {
+    async findOne(id: string) : Promise<EventResponse> {
         try {
             const res = await firstValueFrom(
-                this.httpService.get(`${this.eventsServiceUrl}/${id}`)
+                this.httpService.get<EventResponse>(`${this.eventsServiceUrl}/${id}`)
             );
             return res.data;
         } catch (error: any) {
@@ -48,10 +47,10 @@ export class EventsService {
         }
     }
 
-    async findMyEvents(userId: string) {
+    async findMyEvents(userId: string) : Promise<EventResponse[]> {
         try {
             const res = await firstValueFrom(
-                this.httpService.get(`${this.eventsServiceUrl}/my-events`, {
+                this.httpService.get<EventResponse[]>(`${this.eventsServiceUrl}/my-events`, {
                     headers: { 'x-user-id': userId}
                 })
             );
@@ -61,10 +60,10 @@ export class EventsService {
         }
     }
 
-    async update(id: string, data: object, userId: string, userRole: string) {
+    async update(id: string, data: UpdateEventDto, userId: string, userRole: string) : Promise<EventResponse> {
         try {
             const res = await firstValueFrom(
-                this.httpService.put(`${this.eventsServiceUrl}/${id}`, data, {
+                this.httpService.put<EventResponse>(`${this.eventsServiceUrl}/${id}`, data, {
                     headers: { 'x-user-id': userId, 'x-user-role': userRole },
                 })
             );
@@ -74,10 +73,10 @@ export class EventsService {
         }
     }
 
-    async publish(id: string, userId: string, userRole: string) {
+    async publish(id: string, userId: string, userRole: string) : Promise<EventResponse> {
         try { 
             const res = await firstValueFrom(
-                this.httpService.post(`${this.eventsServiceUrl}/${id}/publish`, {}, {
+                this.httpService.post<EventResponse>(`${this.eventsServiceUrl}/${id}/publish`, {}, {
                     headers: { 'x-user-id': userId, 'x-user-role': userRole },
                 })
             );

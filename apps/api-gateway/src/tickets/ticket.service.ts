@@ -2,6 +2,7 @@ import {Injectable, HttpException} from '@nestjs/common';
 import {firstValueFrom} from 'rxjs';
 import {HttpService} from '@nestjs/axios';
 import { SERVICE_PORTS } from '@app/common/constants/index.js';
+import { TicketResponse } from '@app/common/interfaces/index.js';
 
 @Injectable()
 export class TicketsServiceService {
@@ -26,7 +27,7 @@ export class TicketsServiceService {
         }
     }
 
-    async myTickets(userId: string) {
+    async myTickets(userId: string) : Promise<TicketResponse[]> {
         try {
             const res = await firstValueFrom(
                 this.httpService.get(`${this.ticketServiceUrl}/mytickets`, {
@@ -42,7 +43,7 @@ export class TicketsServiceService {
         }
     }
 
-    async findOne(userId: string, ticketCode: string) {
+    async findOne(userId: string, ticketCode: string) : Promise<TicketResponse> {
         try{
             const res = await firstValueFrom(
                 this.httpService.get(`${this.ticketServiceUrl}/${ticketCode}`, {
@@ -58,10 +59,10 @@ export class TicketsServiceService {
         }
     }
 
-    async cancelTicket(userId: string, ticketCode: string) {
+    async cancelTicket(userId: string, ticketCode: string): Promise<TicketResponse> {
         try{
             const res = await firstValueFrom(
-                this.httpService.post(`${this.ticketServiceUrl}/cancel/${ticketCode}`, {}, {
+                this.httpService.post<TicketResponse>(`${this.ticketServiceUrl}/cancel/${ticketCode}`, {}, {
                     headers: {
                         'x-user-id': userId
                     }

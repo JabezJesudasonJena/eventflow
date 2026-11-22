@@ -2,6 +2,7 @@ import { Injectable, HttpException } from '@nestjs/common';
 import {HttpService} from '@nestjs/axios';
 import {firstValueFrom} from 'rxjs';
 import {SERVICE_PORTS} from '@app/common/constants/index.js';
+import {AuthResponse, UserProfileResponse} from '@app/common/interfaces/index.js';
 
 @Injectable()
 export class AuthService {
@@ -9,24 +10,30 @@ export class AuthService {
 
     constructor(private readonly httpService: HttpService) {}
 
-    async register(data: {email: string, password: string, name: string}) {
+    async register(data: {email: string, password: string, name: string}) : Promise<UserProfileResponse> {
         try { 
             const res = await firstValueFrom(
-                this.httpService.post(`${this.authServiceUrl}/register`, data)
+                this.httpService.post<UserProfileResponse>(
+                    `${this.authServiceUrl}/register`, 
+                    data
+                )
             );
             return res.data;
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(error);
         }
     }
 
-    async login(data: {email: string, password: string}) {
+    async login(data: {email: string, password: string}) : Promise<AuthResponse> {
         try { 
             const res = await firstValueFrom(
-                this.httpService.post(`${this.authServiceUrl}/login`, data)
+                this.httpService.post<AuthResponse>(
+                    `${this.authServiceUrl}/login`, 
+                    data
+                )
             );
             return res.data;
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(error);
         }
     }
@@ -39,7 +46,7 @@ export class AuthService {
                 })
             )
             return res.data;
-        } catch (error: any) {
+        } catch (error) {
             this.handleError(error);
         }
     }
