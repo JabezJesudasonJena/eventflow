@@ -7,6 +7,7 @@ import { EventModule } from './events/event.module.js';
 import {PassportModule} from '@nestjs/passport';
 import {JwtModule} from '@nestjs/jwt';
 import { JwtStrategy } from './jwt.startegy.js';
+import { TicketsModule } from './tickets/ticket.module.js';
 
 @Module({
   imports: [
@@ -15,7 +16,8 @@ import { JwtStrategy } from './jwt.startegy.js';
       secret: process.env.JWT_SECRET || 'secret',
     }),
     AuthModule,
-    EventModule
+    EventModule,
+    TicketsModule,
   ],
   controllers: [AppController],
   // It is required to provide the JwtStrategy here because it is used in the AuthGuard which is used in the AppController

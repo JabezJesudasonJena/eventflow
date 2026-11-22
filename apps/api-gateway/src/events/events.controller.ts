@@ -16,7 +16,7 @@ export class EventsController {
     @UseGuards(AuthGuard('jwt'))
     @Get('my-events')
     findMyEvents(@Request() req: {user: {userId: string}}) {
-        return this.eventsService.findMyEvents(req.user.userId);           
+        return this.eventsService.findMyEvents(req.user.userId);
     }
 
     // Public - get a single event by id
